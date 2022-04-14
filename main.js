@@ -1,3 +1,5 @@
+const commitsPerPage = 35;
+
 document.addEventListener("pjax:end", function () {
   var buttons = document.getElementsByClassName(
     "btn btn-outline BtnGroup-item"
@@ -18,7 +20,7 @@ document.addEventListener("pjax:end", function () {
     return;
   }
 
-  var lastPage = totalCommits - 35;
+  var lastPage = totalCommits - commitsPerPage;
   var lastPageHref = href.replace(/(after=\w+)\+\d+/, "$1+" + lastPage);
   var firstCommitButton =
     `<a rel="nofollow" class="btn btn-danger btn-outline BtnGroup-item" href="{{LAST_COMMIT}}">First Commit</a>`.replace(
@@ -30,15 +32,8 @@ document.addEventListener("pjax:end", function () {
 });
 
 function getTotalCommits() {
-  var links = document.getElementsByTagName("a");
-  var repoLink = "";
-
-  for (var i = 0; i < links.length; i++) {
-    if (links[i].getAttribute("data-pjax")) {
-      repoLink = links[i].getAttribute("href");
-      break;
-    }
-  }
+  var codeTab = document.querySelector("#code-tab");
+  var repoLink = codeTab.getAttribute("href");
 
   if (!repoLink) {
     return -1;
