@@ -1,14 +1,25 @@
 const commitsPerPage = 35;
 
 document.addEventListener("pjax:end", function () {
+  if (!window.location.pathname.includes("commits")) {
+    return;
+  }
+
   var buttons = document.getElementsByClassName(
     "btn btn-outline BtnGroup-item"
   );
+
   if (buttons.length < 1) {
     return;
   }
 
   var olderButton = buttons[buttons.length - 1];
+
+  // Ensure there's only one button and that it's actually the one named
+  // "Older".
+  if (olderButton.textContent !== "Older") {
+    return;
+  }
 
   var href = olderButton.getAttribute("href");
   if (!href) {
